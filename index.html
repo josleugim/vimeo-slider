@@ -3,25 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Vimveo API</title>
+    <script type="application/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-<iframe id="handstick" src="https://player.vimeo.com/video/207191558" width="640" height="782" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<div id="handstick"></div>
+<a data-videoid="182105559" href="#">Drone Racing League - Show Titles</a>
 <script type="application/javascript" src="./bower_components/vimeo-player-js/dist/player.js"></script>
 <script>
-
+    var options = {
+        id: 143328108,
+        width: 640
+    };
     // If you want to control the embeds, you’ll need to create a Player object.
     // You can pass either the `<div>` or the `<iframe>` created inside the div.
-    var handstickPlayer = new Vimeo.Player('handstick');
+    var handstickPlayer = new Vimeo.Player('handstick', options);
     handstickPlayer.on('play', function() {
         console.log('played the handstick video!');
     });
     handstickPlayer.on('ended', function(data) {
         console.log(data);
-        loadVideo();
+        loadVideo(144382504);
     });
 
-    function loadVideo() {
-        handstickPlayer.loadVideo(76979871).then(function(id) {
+    $('a').on('click', function() {
+        var videoid = $(this).data('videoid');
+        loadVideo(videoid);
+    });
+
+    function loadVideo(videoId) {
+        handstickPlayer.loadVideo(videoId).then(function(id) {
             // the video successfully loaded
             console.log('Video loaded');
         }).catch(function(error) {
