@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vimveo API</title>
+</head>
+<body>
+<iframe id="handstick" src="https://player.vimeo.com/video/207191558" width="640" height="782" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<script type="application/javascript" src="./bower_components/vimeo-player-js/dist/player.js"></script>
+<script>
+
+    // If you want to control the embeds, you’ll need to create a Player object.
+    // You can pass either the `<div>` or the `<iframe>` created inside the div.
+    var handstickPlayer = new Vimeo.Player('handstick');
+    handstickPlayer.on('play', function() {
+        console.log('played the handstick video!');
+    });
+    handstickPlayer.on('ended', function(data) {
+        console.log(data);
+        loadVideo();
+    });
+
+    function loadVideo() {
+        handstickPlayer.loadVideo(76979871).then(function(id) {
+            // the video successfully loaded
+            console.log('Video loaded');
+        }).catch(function(error) {
+            console.log(error);
+            switch (error.name) {
+                case 'TypeError':
+                    // the id was not a number
+                    break;
+
+                case 'PasswordError':
+                    // the video is password-protected and the viewer needs to enter the
+                    // password first
+                    break;
+
+                case 'PrivacyError':
+                    // the video is password-protected or private
+                    break;
+
+                default:
+                    // some other error occurred
+                    break;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
